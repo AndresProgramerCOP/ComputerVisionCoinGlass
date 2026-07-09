@@ -37,3 +37,7 @@ uv.lock
 
 # MiMoCode
 .mimocode/
+
+# Obsidian
+.obsidian/
+*.md.bak
