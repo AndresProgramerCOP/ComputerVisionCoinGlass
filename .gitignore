@@ -41,3 +41,6 @@ uv.lock
 # Obsidian
 .obsidian/
 *.md.bak
+
+# Errors log (no versionar)
+docs/errors/
