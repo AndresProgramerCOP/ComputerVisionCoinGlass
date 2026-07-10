@@ -96,7 +96,7 @@ from datetime import datetime
 
 now = datetime.now()
 fecha = now.strftime("%Y-%m-%d")
-hora = now.strftime("%H%M")
+hora = now.strftime("%H.%M")
 output_filename = f"data/output/ocr_{exchange_par}_{timeframe}_{fecha}_{hora}.md"
 
 metadata = {
