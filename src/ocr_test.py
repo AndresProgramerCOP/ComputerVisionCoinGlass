@@ -58,18 +58,26 @@ for i, (bbox, text, conf) in enumerate(otros, 1):
 
 # Guardar resultados en Markdown con YAML frontmatter
 from datetime import datetime
-fecha = datetime.now().strftime("%Y-%m-%d")
+
+metadata = {
+    "titulo": "Resultados OCR — CoinGlass",
+    "fecha": datetime.now().strftime("%Y-%m-%d"),
+    "imagen": img_path,
+    "resolucion": f"{img.shape[1]}x{img.shape[0]}",
+    "libreria": "EasyOCR",
+    "total_textos": len(results),
+    "total_precios": len(precios),
+    "formato_salida": "markdown",
+}
 
 with open("data/output/ocr_results.md", "w", encoding="utf-8") as f:
+    # YAML frontmatter desde diccionario
     f.write("---\n")
-    f.write(f"titulo: \"Resultados OCR — CoinGlass\"\n")
-    f.write(f"fecha: {fecha}\n")
-    f.write(f"imagen: \"{img_path}\"\n")
-    f.write(f"resolucion: \"{img.shape[1]}x{img.shape[0]}\"\n")
-    f.write(f"libreria: \"EasyOCR\"\n")
-    f.write(f"total_textos: {len(results)}\n")
-    f.write(f"total_precios: {len(precios)}\n")
-    f.write(f"formato_salida: \"markdown\"\n")
+    for key, value in metadata.items():
+        if isinstance(value, str):
+            f.write(f'{key}: "{value}"\n')
+        else:
+            f.write(f"{key}: {value}\n")
     f.write("---\n\n")
     f.write("# Resultados OCR — CoinGlass\n\n")
 

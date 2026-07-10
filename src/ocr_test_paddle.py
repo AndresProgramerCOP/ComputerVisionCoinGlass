@@ -64,13 +64,30 @@ print("=" * 60)
 for i, (bbox, text, conf) in enumerate(otros, 1):
     print(f"  {i:2d}. [{conf:.2f}] {text}")
 
-# Guardar resultados en Markdown
+# Guardar resultados en Markdown con YAML frontmatter
+from datetime import datetime
+
+metadata = {
+    "titulo": "Resultados OCR — PaddleOCR",
+    "fecha": datetime.now().strftime("%Y-%m-%d"),
+    "imagen": img_path,
+    "resolucion": f"{img.shape[1]}x{img.shape[0]}",
+    "libreria": "PaddleOCR",
+    "total_textos": len(raw_results),
+    "total_precios": len(precios),
+    "formato_salida": "markdown",
+}
+
 with open("data/output/ocr_results_paddle.md", "w", encoding="utf-8") as f:
+    # YAML frontmatter desde diccionario
+    f.write("---\n")
+    for key, value in metadata.items():
+        if isinstance(value, str):
+            f.write(f'{key}: "{value}"\n')
+        else:
+            f.write(f"{key}: {value}\n")
+    f.write("---\n\n")
     f.write("# Resultados OCR — PaddleOCR\n\n")
-    f.write(f"**Librería:** PaddleOCR\n")
-    f.write(f"**Imagen:** `{img_path}`\n")
-    f.write(f"**Resolución:** {img.shape[1]}x{img.shape[0]} px\n")
-    f.write(f"**Textos encontrados:** {len(raw_results)}\n\n")
 
     # Precios del eje X
     f.write("## Precios del Eje X\n\n")

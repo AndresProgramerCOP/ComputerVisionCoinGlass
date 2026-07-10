@@ -66,18 +66,26 @@ for i, (text, conf, x1, y1, x2, y2, w, h) in enumerate(otros[:20], 1):
 
 # Guardar resultados en Markdown con YAML frontmatter
 from datetime import datetime
-fecha = datetime.now().strftime("%Y-%m-%d")
+
+metadata = {
+    "titulo": "Resultados OCR — Tesseract",
+    "fecha": datetime.now().strftime("%Y-%m-%d"),
+    "imagen": img_path,
+    "resolucion": f"{img.shape[1]}x{img.shape[0]}",
+    "libreria": "Tesseract OCR 5.4.0",
+    "total_textos": len(precios) + len(otros),
+    "total_precios": len(precios),
+    "formato_salida": "markdown",
+}
 
 with open("data/output/ocr_results_tesseract.md", "w", encoding="utf-8") as f:
+    # YAML frontmatter desde diccionario
     f.write("---\n")
-    f.write(f"titulo: \"Resultados OCR — Tesseract\"\n")
-    f.write(f"fecha: {fecha}\n")
-    f.write(f"imagen: \"{img_path}\"\n")
-    f.write(f"resolucion: \"{img.shape[1]}x{img.shape[0]}\"\n")
-    f.write(f"libreria: \"Tesseract OCR 5.4.0\"\n")
-    f.write(f"total_textos: {len(precios) + len(otros)}\n")
-    f.write(f"total_precios: {len(precios)}\n")
-    f.write(f"formato_salida: \"markdown\"\n")
+    for key, value in metadata.items():
+        if isinstance(value, str):
+            f.write(f'{key}: "{value}"\n')
+        else:
+            f.write(f"{key}: {value}\n")
     f.write("---\n\n")
     f.write("# Resultados OCR — Tesseract\n\n")
 
