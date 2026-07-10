@@ -26,6 +26,19 @@ results = reader.readtext(img_path)
 precios = []
 otros = []
 exchange_par = "unknown"  # Por defecto
+timeframe = "unknown"  # Por defecto
+
+# Patrones de tiempo conocidos
+timeframe_patterns = [
+    (r'^(\d+)\s*d[ií]a$', 'd'),      # 1 día, 7 días
+    (r'^(\d+)\s*semana$', 's'),        # 1 semana
+    (r'^(\d+)\s*mes$', 'm'),           # 1 mes
+    (r'^(\d+)\s*hour$', 'h'),          # 1 hour
+    (r'^(\d+)\s*min$', 'min'),         # 1 min
+    (r'^1\s*day$', '1d'),              # 1 day
+    (r'^7\s*days$', '7d'),             # 7 days
+    (r'^30\s*days$', '30d'),           # 30 days
+]
 
 for bbox, text, conf in results:
     text_clean = text.strip()
@@ -37,6 +50,18 @@ for bbox, text, conf in results:
             exchange = parts[0]  # Bitget
             par = parts[1].replace("/", "_")  # BTCIUSDT -> BTC_USDT
             exchange_par = f"{exchange}_{par}"
+    # Detectar timeframe
+    elif text_clean.lower() in ["día", "dia", "day", "días", "dias", "days"]:
+        timeframe = "1d"
+    elif text_clean.lower() in ["semana", "week", "weeks"]:
+        timeframe = "7d"
+    elif text_clean.lower() in ["mes", "month", "months"]:
+        timeframe = "30d"
+    elif text_clean.lower() in ["hora", "hour", "hours"]:
+        timeframe = "1h"
+    elif re.match(r'^(\d+)\s*d[ií]a', text_clean.lower()):
+        match = re.match(r'^(\d+)\s*d[ií]a', text_clean.lower())
+        timeframe = f"{match.group(1)}d"
     # Detectar precios del eje X (números de 5 dígitos que empiezan con 6)
     elif re.match(r'^6\d{4}$', text_clean):
         precios.append((bbox, text_clean, conf))
@@ -70,7 +95,7 @@ for i, (bbox, text, conf) in enumerate(otros, 1):
 from datetime import datetime
 
 fecha = datetime.now().strftime("%Y-%m-%d")
-output_filename = f"data/output/ocr_{exchange_par}_{fecha}.md"
+output_filename = f"data/output/ocr_{exchange_par}_{timeframe}_{fecha}.md"
 
 metadata = {
     "titulo": "Resultados OCR — CoinGlass",
@@ -80,6 +105,7 @@ metadata = {
     "libreria": "EasyOCR",
     "exchange": exchange_par.split("_")[0] if "_" in exchange_par else exchange_par,
     "par": "_".join(exchange_par.split("_")[1:]) if "_" in exchange_par else "",
+    "timeframe": timeframe,
     "total_textos": len(results),
     "total_precios": len(precios),
     "formato_salida": "markdown",
