@@ -56,12 +56,22 @@ print("=" * 60)
 for i, (bbox, text, conf) in enumerate(otros, 1):
     print(f"  {i:2d}. [{conf:.2f}] {text}")
 
-# Guardar resultados en Markdown
+# Guardar resultados en Markdown con YAML frontmatter
+from datetime import datetime
+fecha = datetime.now().strftime("%Y-%m-%d")
+
 with open("data/output/ocr_results.md", "w", encoding="utf-8") as f:
+    f.write("---\n")
+    f.write(f"titulo: \"Resultados OCR — CoinGlass\"\n")
+    f.write(f"fecha: {fecha}\n")
+    f.write(f"imagen: \"{img_path}\"\n")
+    f.write(f"resolucion: \"{img.shape[1]}x{img.shape[0]}\"\n")
+    f.write(f"libreria: \"EasyOCR\"\n")
+    f.write(f"total_textos: {len(results)}\n")
+    f.write(f"total_precios: {len(precios)}\n")
+    f.write(f"formato_salida: \"markdown\"\n")
+    f.write("---\n\n")
     f.write("# Resultados OCR — CoinGlass\n\n")
-    f.write(f"**Imagen:** `{img_path}`\n")
-    f.write(f"**Resolución:** {img.shape[1]}x{img.shape[0]} px\n")
-    f.write(f"**Textos encontrados:** {len(results)}\n\n")
 
     # Precios del eje X
     f.write("## Precios del Eje X\n\n")

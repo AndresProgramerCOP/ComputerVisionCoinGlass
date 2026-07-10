@@ -64,13 +64,22 @@ print("=" * 60)
 for i, (text, conf, x1, y1, x2, y2, w, h) in enumerate(otros[:20], 1):
     print(f"  {i:2d}. [{conf:3d}%] {text}")
 
-# Guardar resultados en Markdown
+# Guardar resultados en Markdown con YAML frontmatter
+from datetime import datetime
+fecha = datetime.now().strftime("%Y-%m-%d")
+
 with open("data/output/ocr_results_tesseract.md", "w", encoding="utf-8") as f:
+    f.write("---\n")
+    f.write(f"titulo: \"Resultados OCR — Tesseract\"\n")
+    f.write(f"fecha: {fecha}\n")
+    f.write(f"imagen: \"{img_path}\"\n")
+    f.write(f"resolucion: \"{img.shape[1]}x{img.shape[0]}\"\n")
+    f.write(f"libreria: \"Tesseract OCR 5.4.0\"\n")
+    f.write(f"total_textos: {len(precios) + len(otros)}\n")
+    f.write(f"total_precios: {len(precios)}\n")
+    f.write(f"formato_salida: \"markdown\"\n")
+    f.write("---\n\n")
     f.write("# Resultados OCR — Tesseract\n\n")
-    f.write(f"**Librería:** Tesseract OCR 5.4.0\n")
-    f.write(f"**Imagen:** `{img_path}`\n")
-    f.write(f"**Resolución:** {img.shape[1]}x{img.shape[0]} px\n")
-    f.write(f"**Textos encontrados:** {len(precios) + len(otros)}\n\n")
 
     # Precios del eje X
     f.write("## Precios del Eje X\n\n")
