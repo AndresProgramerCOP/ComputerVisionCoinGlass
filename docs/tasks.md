@@ -6,14 +6,16 @@
 - [x] Crear estructura del proyecto
 - [x] Crear README.md
 - [x] Primer commit en git
+- [x] Subir repositorio a GitHub
+- [x] Prueba OCR con imagen real de CoinGlass
+- [x] Evaluar librerías OCR (EasyOCR, PaddleOCR, Tesseract)
+- [x] **Decisión: Usar EasyOCR como librería principal**
 
 ## Pendiente
 
 ### Fase 1: Fundamentos
-- [ ] Subir repositorio a GitHub
 - [ ] Crear documentación de requisitos (docs/requirements.md)
 - [ ] Crear documentación de arquitectura (docs/architecture.md)
-- [ ] Prueba OCR con imagen real de CoinGlass
 
 ### Fase 2: Pipeline de Captura
 - [ ] Módulo de captura de imágenes (src/capture.py)
