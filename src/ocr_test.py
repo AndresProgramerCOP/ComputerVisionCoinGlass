@@ -47,7 +47,7 @@ for i, (bbox, text, conf) in enumerate(precios, 1):
     x2, y2 = int(bbox[2][0]), int(bbox[2][1])  # Esquina inferior-derecha
     ancho = x2 - x1
     alto = y2 - y1
-    print(f"  {i:2d}. [{conf:.2f}] ${text:>6}  |  x={x1}-{x2}  y={y1}-{y2}  ({ancho}x{alto}px)")
+    print(f"  {i:2d}. [{conf:.2f}] {text:>6}  |  x={x1}-{x2}  y={y1}-{y2}  ({ancho}x{alto}px)")
 
 print("\n" + "=" * 60)
 print("📋 OTROS TEXTOS")
@@ -90,7 +90,7 @@ with open("data/output/ocr_results.md", "w", encoding="utf-8") as f:
         x2, y2 = int(bbox[2][0]), int(bbox[2][1])
         ancho = x2 - x1
         alto = y2 - y1
-        f.write(f"| {i} | ${text} | {conf:.2f} | {x1} | {y1} | {x2} | {y2} | {ancho} | {alto} |\n")
+        f.write(f"| {i} | {text} | {conf:.2f} | {x1} | {y1} | {x2} | {y2} | {ancho} | {alto} |\n")
 
     # Otros textos
     f.write("\n## Otros Textos\n\n")

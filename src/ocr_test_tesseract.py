@@ -55,7 +55,7 @@ print("=" * 60)
 print(f"\nTotal encontrados: {len(precios)}\n")
 
 for i, (text, conf, x1, y1, x2, y2, w, h) in enumerate(precios, 1):
-    print(f"  {i:2d}. [{conf:3d}%] ${text:>6}  |  x={x1}-{x2}  y={y1}-{y2}  ({w}x{h}px)")
+    print(f"  {i:2d}. [{conf:3d}%] {text:>6}  |  x={x1}-{x2}  y={y1}-{y2}  ({w}x{h}px)")
 
 print("\n" + "=" * 60)
 print("[Tesseract] OTROS TEXTOS")
@@ -94,7 +94,7 @@ with open("data/output/ocr_results_tesseract.md", "w", encoding="utf-8") as f:
     f.write("| # | Precio | Confianza | X1 | Y1 | X2 | Y2 | Ancho | Alto |\n")
     f.write("|---|--------|-----------|----|----|----|----|-------|------|\n")
     for i, (text, conf, x1, y1, x2, y2, w, h) in enumerate(precios, 1):
-        f.write(f"| {i} | ${text} | {conf}% | {x1} | {y1} | {x2} | {y2} | {w} | {h} |\n")
+        f.write(f"| {i} | {text} | {conf}% | {x1} | {y1} | {x2} | {y2} | {w} | {h} |\n")
 
     # Otros textos
     f.write("\n## Otros Textos\n\n")
