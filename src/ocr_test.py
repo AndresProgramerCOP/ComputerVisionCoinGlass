@@ -28,7 +28,7 @@ otros = []
 
 for bbox, text, conf in results:
     # Detectar precios del eje X (números de 5 dígitos que empiezan con 6)
-    if re.match(r'^6[1-4]\d{3}$', text.strip()):
+    if re.match(r'^6\d{4}$', text.strip()):
         precios.append((bbox, text.strip(), conf))
     else:
         otros.append((bbox, text.strip(), conf))
