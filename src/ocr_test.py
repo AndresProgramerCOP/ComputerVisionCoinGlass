@@ -69,8 +69,8 @@ def process_image(img_path, reader):
         elif re.match(r'^(\d+)\s*d[ií]a', text_clean.lower()):
             match = re.match(r'^(\d+)\s*d[ií]a', text_clean.lower())
             timeframe = f"{match.group(1)}d"
-        # Detectar precios del eje X
-        elif re.match(r'^6\d{4}$', text_clean):
+        # Detectar precios del eje X (números con o sin decimales)
+        elif re.match(r'^\d{3,}([.,]\d+)?$', text_clean):
             precios.append((bbox, text_clean, conf))
         else:
             otros.append((bbox, text_clean, conf))
@@ -98,7 +98,7 @@ def save_results(data, img_path):
         "titulo": "Resultados OCR — CoinGlass",
         "fecha": fecha,
         "hora": now.strftime("%H:%M:%S"),
-        "imagen": str(img_path),
+        "imagen": str(img_path).replace("\\", "/"),
         "resolucion": f"{data['img'].shape[1]}x{data['img'].shape[0]}",
         "libreria": "EasyOCR",
         "exchange": data['exchange_par'].split("_")[0] if "_" in data['exchange_par'] else data['exchange_par'],
