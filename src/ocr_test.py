@@ -94,12 +94,15 @@ for i, (bbox, text, conf) in enumerate(otros, 1):
 # Guardar resultados en Markdown con YAML frontmatter
 from datetime import datetime
 
-fecha = datetime.now().strftime("%Y-%m-%d")
-output_filename = f"data/output/ocr_{exchange_par}_{timeframe}_{fecha}.md"
+now = datetime.now()
+fecha = now.strftime("%Y-%m-%d")
+hora = now.strftime("%H%M")
+output_filename = f"data/output/ocr_{exchange_par}_{timeframe}_{fecha}_{hora}.md"
 
 metadata = {
     "titulo": "Resultados OCR — CoinGlass",
     "fecha": fecha,
+    "hora": now.strftime("%H:%M:%S"),
     "imagen": img_path,
     "resolucion": f"{img.shape[1]}x{img.shape[0]}",
     "libreria": "EasyOCR",
