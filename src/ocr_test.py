@@ -25,13 +25,23 @@ results = reader.readtext(img_path)
 # Separar por tipo
 precios = []
 otros = []
+exchange_par = "unknown"  # Por defecto
 
 for bbox, text, conf in results:
+    text_clean = text.strip()
+    # Detectar exchange y par (ej: "Bitget BTCIUSDT Perpetuo")
+    if "Perpetuo" in text_clean or "Perpetual" in text_clean:
+        # Extraer exchange y par
+        parts = text_clean.split()
+        if len(parts) >= 2:
+            exchange = parts[0]  # Bitget
+            par = parts[1].replace("/", "_")  # BTCIUSDT -> BTC_USDT
+            exchange_par = f"{exchange}_{par}"
     # Detectar precios del eje X (números de 5 dígitos que empiezan con 6)
-    if re.match(r'^6\d{4}$', text.strip()):
-        precios.append((bbox, text.strip(), conf))
+    elif re.match(r'^6\d{4}$', text_clean):
+        precios.append((bbox, text_clean, conf))
     else:
-        otros.append((bbox, text.strip(), conf))
+        otros.append((bbox, text_clean, conf))
 
 # Ordenar precios por posición X (izquierda a derecha)
 precios.sort(key=lambda x: x[0][0][0])
@@ -59,18 +69,23 @@ for i, (bbox, text, conf) in enumerate(otros, 1):
 # Guardar resultados en Markdown con YAML frontmatter
 from datetime import datetime
 
+fecha = datetime.now().strftime("%Y-%m-%d")
+output_filename = f"data/output/ocr_{exchange_par}_{fecha}.md"
+
 metadata = {
     "titulo": "Resultados OCR — CoinGlass",
-    "fecha": datetime.now().strftime("%Y-%m-%d"),
+    "fecha": fecha,
     "imagen": img_path,
     "resolucion": f"{img.shape[1]}x{img.shape[0]}",
     "libreria": "EasyOCR",
+    "exchange": exchange_par.split("_")[0] if "_" in exchange_par else exchange_par,
+    "par": "_".join(exchange_par.split("_")[1:]) if "_" in exchange_par else "",
     "total_textos": len(results),
     "total_precios": len(precios),
     "formato_salida": "markdown",
 }
 
-with open("data/output/ocr_results.md", "w", encoding="utf-8") as f:
+with open(output_filename, "w", encoding="utf-8") as f:
     # YAML frontmatter desde diccionario
     f.write("---\n")
     for key, value in metadata.items():
@@ -101,4 +116,4 @@ with open("data/output/ocr_results.md", "w", encoding="utf-8") as f:
         x2, y2 = int(bbox[2][0]), int(bbox[2][1])
         f.write(f"| {i} | {text} | {conf:.2f} | {x1} | {y1} | {x2} | {y2} |\n")
 
-print("\n✅ Resultados guardados en data/output/ocr_results.md")
+print(f"\n✅ Resultados guardados en {output_filename}")
