@@ -69,8 +69,8 @@ def process_image(img_path, reader):
         elif re.match(r'^(\d+)\s*d[ií]a', text_clean.lower()):
             match = re.match(r'^(\d+)\s*d[ií]a', text_clean.lower())
             timeframe = f"{match.group(1)}d"
-        # Detectar precios del eje X (números con o sin decimales)
-        elif re.match(r'^\d{3,}([.,]\d+)?$', text_clean):
+        # Detectar precios del eje X (cualquier número)
+        elif re.match(r'^\d+([.,]\d+)?$', text_clean):
             precios.append((bbox, text_clean, conf))
         else:
             otros.append((bbox, text_clean, conf))
