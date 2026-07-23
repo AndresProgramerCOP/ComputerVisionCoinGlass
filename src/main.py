@@ -1,4 +1,4 @@
-"""Prueba OCR — extracción de precios del eje X"""
+"""ComputerVisionCoinGlass — extracción de precios del eje X"""
 import easyocr
 import cv2
 import sys
