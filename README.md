@@ -23,12 +23,9 @@ Extraer automáticamente información estructurada (precios, niveles de apalanca
 ## Tecnologías
 
 - **Python 3.12** — Lenguaje principal
-- **OpenCV** — Procesamiento de imágenes
 - **EasyOCR** — Extracción de texto (español + inglés)
-- **NumPy** — Manejo de datos numéricos
+- **OpenCV** — Carga de imágenes
 - **Pillow** — Manejo de imágenes
-- **Matplotlib** — Visualización
-- **Pandas** — Manipulación de datos
 
 ## Instalación
 
@@ -74,6 +71,25 @@ Cada resultado es un archivo `.md` con:
 
 Nombre del archivo: `ocr_{exchange}_{pair}_{timeframe}_{fecha}_{hora}.md`
 
+## Desarrollo
+
+```bash
+# Ejecutar tests
+uv run pytest
+
+# Ejecutar tests lentos (requieren EasyOCR)
+uv run pytest -m slow
+
+# Verificar linting
+uv run ruff check src/ tests/
+```
+
 ## Roadmap
 
-Ver `docs/tasks.md` para el plan completo de 7 fases. Actualmente: Fase 5 (extracción OCR) parcialmente implementada.
+Ver `docs/tasks.md` para el plan completo de 7 fases.
+
+**Estado actual:**
+- Fases 1-4: Pendientes (fundamentos, captura, preprocesamiento, detección)
+- Fase 5: OCR parcialmente implementada en `src/main.py`
+- Fase 6: Pendiente (exportación JSON/CSV)
+- Fase 7: Pendiente (tests unitarios e integración)

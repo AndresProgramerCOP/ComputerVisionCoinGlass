@@ -2,9 +2,9 @@
 
 ## Project overview
 
-OCR system that extracts structured data (prices, leverage levels, exchange info) from CoinGlass liquidation heatmap screenshots. Early-stage — single source file (`src/main.py`), no tests yet.
+OCR system that extracts structured data (prices, leverage levels, exchange info) from CoinGlass liquidation heatmap screenshots. Early-stage — single source file (`src/main.py`), with tests in `tests/test_main.py`.
 
-**Language: all code, comments, docs, and variable names are in Spanish.**
+**Language: all code, comments, docs, and variable names are in English.**
 
 ## Quick start
 
@@ -43,7 +43,8 @@ Each file has YAML frontmatter (metadata) + Markdown tables (prices with boundin
 - Commit messages: conventional commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`)
 - No linter config file — ruff runs with defaults
 - No CI/CD, no pre-commit hooks
-- `tests/` directory exists but has no tests
+- `tests/test_main.py` — 14 tests (unit + integration)
+- pytest configured in `pyproject.toml` with marker `slow` for EasyOCR tests
 
 ## Common pitfalls
 
